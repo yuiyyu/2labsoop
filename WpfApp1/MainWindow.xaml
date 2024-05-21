@@ -31,10 +31,10 @@
                 <Button Content="3" HorizontalAlignment="Left" Height="28" Margin="155,357,0,0" VerticalAlignment="Top" Width="50" RenderTransformOrigin="0.524,2.268" Click="Button_Click"/>
                 <Button Content="+" HorizontalAlignment="Left" Height="28" Margin="220,356,0,0" VerticalAlignment="Top" Width="50" RenderTransformOrigin="0.524,2.268" Click="Operation_Click"/>
                 <Button Content="00" HorizontalAlignment="Left" Height="28" Margin="23,401,0,0" VerticalAlignment="Top" Width="50" Click="Button_Click"/>
-                <Button Content="," HorizontalAlignment="Left" Height="28" Margin="155,401,0,0" VerticalAlignment="Top" Width="50" RenderTransformOrigin="0.524,2.268" Click="Button_Click"/>
+                <Button Content="." HorizontalAlignment="Left" Height="28" Margin="155,401,0,0" VerticalAlignment="Top" Width="50" RenderTransformOrigin="0.524,2.268" Click="Button_Click"/>
                 <Button Content="=" HorizontalAlignment="Left" Height="28" Margin="220,401,0,0" VerticalAlignment="Top" Width="50" RenderTransformOrigin="0.524,2.268" Click="Operation_Click"/>
-                <TextBox x:Name="result" HorizontalAlignment="Left" Height="63" Margin="23,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="247"/>
-                <TextBox x:Name="result2" HorizontalAlignment="Left" Height="60" Margin="-1,37,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="142" RenderTransformOrigin="0.5,0.5">
+                <TextBox x:Name="result" Text="0" HorizontalAlignment="Left" Height="63" Margin="23,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="247"/>
+                <TextBox x:Name="result2" HorizontalAlignment="Left" Height="21" Margin="24,108,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.5,0.5">
                     <TextBox.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform/>
@@ -46,10 +46,10 @@
                 </TextBox>
                 <Button Content="0" HorizontalAlignment="Left" Height="28" Margin="90,401,0,0" VerticalAlignment="Top" Width="50" Click="Button_Click"/>
                 <Button Content="÷" HorizontalAlignment="Left" Height="27" Margin="220,230,0,0" VerticalAlignment="Top" Width="50" RenderTransformOrigin="0.524,2.268" Click="Operation_Click"/>
-                <Button x:Name="pow" Content="^" Visibility="Visible" Margin="23,442,197,10" FontSize="10" Click="Operation_Click" />
-                <Button x:Name="sqrt" Content="√" Visibility="Visible" Margin="90,440,130,10" FontSize="10" Click="Operation_Click" />
-                <Button x:Name="log10" Content="ln" Visibility="Visible" Margin="155,438,65,10" FontSize="10" Click="Operation_Click"/>
-                <Button x:Name="fac" Content="!" Visibility="Visible" Margin="220,438,1,10" FontSize="10" Click="Operation_Click"/>
+                <Button x:Name="pow" Content="^" Visibility="Collapsed" Margin="23,442,197,10" FontSize="10" Click="Operation_Click" />
+                <Button x:Name="sqrt" Content="√" Visibility="Collapsed" Margin="90,440,130,10" FontSize="10" Click="Operation_Click" />
+                <Button x:Name="log10" Content="ln" Visibility="Collapsed" Margin="155,438,65,10" FontSize="10" Click="Operation_Click"/>
+                <Button x:Name="fac" Content="!" Visibility="Collapsed" Margin="220,438,1,10" FontSize="10" Click="Operation_Click"/>
             </Grid>
         </Grid>
 

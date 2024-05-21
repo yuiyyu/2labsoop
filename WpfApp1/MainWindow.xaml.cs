@@ -54,7 +54,6 @@ namespace WpfApp1
 
             buttonsVisible = !buttonsVisible;
         }
-
         private void Button_Click(object sender, RoutedEventArgs e)
         {
                 string input = (string)((Button)e.OriginalSource).Content;
@@ -81,17 +80,19 @@ namespace WpfApp1
                             }
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Попередня команда відсутня!");
-                    }
-                    result2.Text = calc.PreviousCommand.Substring(0, b + 1);
-                    result.Text = calc.PreviousCommand.Substring(b + 1, calc.PreviousCommand.Length - b - 1);
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Попередня команда відсутня!");
+                }
+                result2.Text = calc.PreviousCommand.Substring(0, b + 1);
+                    result.Text = calc.PreviousCommand.Substring(b + 1, calc.PreviousCommand.Length - b - 1);   
                     previous = result2.Text;
+                
+
                 }
                 else if(input== "⌫")
                 {
-                    result.Text = calc.Erase();
+                    result.Text = calc.Erase(result.Text);
                 }
                 else if (input == ".")
                 {
@@ -106,18 +107,13 @@ namespace WpfApp1
                 }
                 else if (result.Text == "0")
                     result.Text = input;
-                //else if (input == "π")
-                //{
-                //    if (NormalizePI())
-                //        result.Text += input;
-                //}
                 else
                     result.Text += input;
 
         }
         private bool NormalizeZero()
         {
-            if (result.Text.Length < 2)
+            if (result.Text == "0")
                 return false;
             return true;
         }
@@ -130,38 +126,6 @@ namespace WpfApp1
             }
             return true;
         }
-        private bool NormalizePI()
-        {
-            for (int i = 0; i < result.Text.Length; i++)
-            {
-                if (result.Text[i] == 'π')
-                    return false;
-            }
-            return true;
-        }
-
-        //private void Button_Pow_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (!string.IsNullOrEmpty(result.Text))
-        //    {
-        //        double num;
-        //        if (double.TryParse(result.Text, out num))
-        //        {
-        //            calc.ExecuteCommand(new PowCommand(calc.receiver_, num));
-        //            result.Text = calc.receiver_.Info.ToString();
-        //            previous = null;
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("Невiрно введено значення!");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Помилка!");
-        //    }
-        //}
-
         private void Operation_Click(object sender, RoutedEventArgs e)
         {
             string input = (string)((Button)e.OriginalSource).Content;
@@ -194,8 +158,9 @@ namespace WpfApp1
                                 break;
                         }
                         result.Text = calc.receiver_.Info.ToString();
+                        calc.PreviousCommand = previous + num;
                         result2.Text = "";
-                        previous = null;
+                        previous = "";
                         isPrev = false;
                     }
                 }
@@ -208,6 +173,17 @@ namespace WpfApp1
             {
                 result.Text = Convert.ToString(calc.Log10(Convert.ToDouble(result.Text)));
             }
+            else if (input == "!")
+            {
+                if (int.TryParse(result.Text, out int number))
+                {
+                    result.Text = Convert.ToString(calc.Factorial(number));
+                }
+                else
+                {
+                    MessageBox.Show("Введено нецілочисельне вбо занадто велике значення!");
+                }
+            }
             else if (!isPrev)
             {
                 previous = result.Text + input;
@@ -215,81 +191,6 @@ namespace WpfApp1
                 result.Text = "0";
                 isPrev = true;
             }
-        }
-        //private void Button_Log_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (!string.IsNullOrEmpty(result.Text))
-        //    {
-        //        double num;
-        //        if (double.TryParse(result.Text, out num))
-        //        {
-        //            if (num > 0)
-        //            {
-        //                calc.receiver_.Info = Math.Log10(num);
-        //                result.Text = calc.receiver_.Info.ToString(); 
-        //                previous = null;
-        //            }
-        //            else
-        //            {
-        //                MessageBox.Show("Логарифм нуля або вiд'ємного числа не визначено!");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("Невiрно введено значення!");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Помилка!");
-        //    }
-        //}
-        //private async void Button_Factorial_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (!string.IsNullOrEmpty(result.Text))
-        //    {
-        //        int num;
-        //        if (int.TryParse(result.Text, out num))
-        //        {
-        //            // Перевірка чи число не від'ємне
-        //            if (num >= 0)
-        //            {
-        //                //метод для обчислення факторіала
-        //                if (num <= 999) // Обмеження на величину числа для обчислення факторіала
-        //                {
-        //                    double factorial = await Task.Run(() => CalculateFactorial(num));
-        //                    result.Text = factorial.ToString();
-        //                    previous = null;
-        //                }
-        //                else
-        //                {
-        //                    MessageBox.Show("Число занадто велике для обчислення факторіала.");
-        //                }
-        //            }
-        //            else
-        //            {
-        //                MessageBox.Show("Факторіал можна визначити лише для не від'ємних цілих чисел!");
-        //            }
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("Введено не ціле значення!");
-        //        }
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Помилка!");
-        //    }
-        //}
-
-        private double CalculateFactorial(int n)
-        {
-            double result = 1;
-            for (int i = 1; i <= n; i++)
-            {
-                result *= i;
-            }
-            return result;
         }
         abstract class Command
         {
@@ -310,18 +211,15 @@ namespace WpfApp1
                 this.receiver = receiver;
                 this.operand = operand;
             }
-
             public override void Execute()
             {
-                receiver.Run('+', operand);
+                receiver.Run("+", operand);
             }
-
             public override void UnExecute()
             {
-                receiver.Run('-', operand);
+                receiver.Run("-", operand);
             }
         }
-
         class SubCommand : Command
         {
             public SubCommand(Receiver receiver, double operand) : base(receiver)
@@ -329,38 +227,31 @@ namespace WpfApp1
                 this.receiver = receiver;
                 this.operand = operand;
             }
-
             public override void Execute()
             {
-                receiver.Run('-', operand);
+                receiver.Run("-", operand);
             }
-
             public override void UnExecute()
             {
-                receiver.Run('+', operand);
+                receiver.Run("+", operand);
             }
         }
-
         class MulCommand : Command
         {
-
             public MulCommand(Receiver receiver, double operand) : base(receiver)
             {
                 this.receiver = receiver;
                 this.operand = operand;
             }
-
             public override void Execute()
             {
-                receiver.Run('*', operand);
+                receiver.Run("*", operand);
             }
-
             public override void UnExecute()
             {
-                receiver.Run('/', operand);
+                receiver.Run("/", operand);
             }
         }
-
         class DivCommand : Command
         {
             public DivCommand(Receiver receiver, double operand) : base(receiver)
@@ -368,18 +259,15 @@ namespace WpfApp1
                 this.receiver = receiver;
                 this.operand = operand;
             }
-
             public override void Execute()
             {
-                receiver.Run('/', operand);
+                receiver.Run("/", operand);
             }
-
             public override void UnExecute()
             {
-                receiver.Run('*', operand);
+                receiver.Run("*", operand);
             }
         }
-
         class PowCommand : Command
         {
             public PowCommand(Receiver receiver, double operand) : base(receiver)
@@ -389,14 +277,12 @@ namespace WpfApp1
             }
             public override void Execute()
             {
-                receiver.Run('^', operand);
+                receiver.Run("^", operand);
             }
             public override void UnExecute()
             {
-               
             }
         }
-
         class SqrtCommand : Command
         {
             public SqrtCommand(Receiver receiver, double operand) : base(receiver)
@@ -407,7 +293,7 @@ namespace WpfApp1
 
             public override void Execute()
             {
-                receiver.Run('√', 0);
+                receiver.Run("√", operand);
             }
 
             public override void UnExecute()
@@ -426,7 +312,7 @@ namespace WpfApp1
 
             public override void Execute()
             {
-                receiver.Run('l', 0);
+                receiver.Run("ln", 0);
             }
 
             public override void UnExecute()
@@ -437,7 +323,7 @@ namespace WpfApp1
 
         class FactorialCommand : Command
         {
-            public FactorialCommand(Receiver receiver, double operand) : base(receiver)
+            public FactorialCommand(Receiver receiver, int operand) : base(receiver)
             {
                 this.receiver = receiver;
                 this.operand = operand;
@@ -445,7 +331,7 @@ namespace WpfApp1
 
             public override void Execute()
             {
-                receiver.Run('!', operand);
+                receiver.Run("!", operand);
             }
 
             public override void UnExecute()
@@ -457,45 +343,54 @@ namespace WpfApp1
         {
             public double Info;
 
-            public void Run(char operationCode, double operand)
+            public void Run(string operationCode, double operand)
             {
                 switch (operationCode)
                 {
-                    case '+':
+                    case "+":
                         Info += operand;
                         break;
-                    case '-':
+                    case "-":
                         Info -= operand;
                         break;
-                    case '*':
+                    case "*":
                         Info *= operand;
                         break;
-                    case '/':
+                    case "/":
                         if (operand != 0)  
                             Info /= operand;
                         else
                             MessageBox.Show("Неможливо подiлити на 0");
                         break;
-                    case '^':
+                    case "^":
                         Info = Math.Pow(Info, operand);
                         break;
-                    case '√':
+                    case "√":
                         Info = Math.Sqrt(operand);
                         break;
-                    case 'l':
+                    case "ln":
                         Info = Math.Log10(operand); 
                         break;
-                    case '!':
-                        Info = Factorial((int)operand); 
+                    case "!":
+                            Info = Factorial(Convert.ToInt32(operand));
                         break;
                 }
             }
 
             private double Factorial(int n)
             {
-                if (n == 0)
-                    return 1;
-                return n * Factorial(n - 1);
+                if (n < 0)
+                {
+                    MessageBox.Show("Факторіал можна визначити лише для не від'ємних цілих чисел!");
+                    return 0;
+                }
+
+                double result = 1;
+                for (int i = 1; i <= n; i++)
+                {
+                    result *= i;
+                }
+                return result;
             }
         }
 
@@ -583,17 +478,22 @@ namespace WpfApp1
             {
                 return Run(new Log10Command(receiver_, operand));
             }
+            public double Factorial(int operand)
+            {
+                return Run(new FactorialCommand(receiver_, operand));
+            }
             public string C()
             {
                 receiver_.Info = 0;
                 return "0";
             }
-            public string Erase()
+            public string Erase(string text)
             {
-                string erasedInfo = Convert.ToString(receiver_.Info);
-                erasedInfo.Substring(0, erasedInfo.Length - 1);
-                receiver_.Info = Convert.ToDouble(erasedInfo);
-                return erasedInfo;
+                if(text.Length == 1)
+                {
+                    return "0";
+                }
+                return text.Substring(0, text.Length - 1);
             }
             public string PreviousCommand { get; set; }
         }
